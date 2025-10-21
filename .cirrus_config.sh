@@ -101,7 +101,7 @@ tg_send_photo() {
 build_message() {
 	if [ "$CI_MESSAGE_ID" = "" ]; then
 CI_MESSAGE_ID=$(tg_send_photo --chat_id "$TG_CHAT_ID" --photo "$LOGO" --parse_mode "html" --caption "<b>=== 🦊 OrangeFox Recovery Builder ===</b>
-<b>🖥 OrangeFox Branch :</b> ${FOX_BRANCH}
+<b>🖥 OrangeFox Branch :</b> ${FOX_SYNC_BRANCH}
 <b>📱 Device :</b> ${DEVICE}
 <b>📝 CodeName :</b> ${DEVICE_NAME}
 <b>📟 Job :</b> $(nproc --all) Paralel processing
@@ -113,7 +113,7 @@ CI_MESSAGE_ID=$(tg_send_photo --chat_id "$TG_CHAT_ID" --photo "$LOGO" --parse_mo
 ${2}" | jq .result.message_id)
 	else
 tg_edit_message_caption --chat_id "$TG_CHAT_ID" --message_id "$CI_MESSAGE_ID" --parse_mode "html" --caption "<b>=== 🦊 OrangeFox Recovery Builder ===</b>
-<b>🖥 OrangeFox Branch :</b> ${FOX_BRANCH}
+<b>🖥 OrangeFox Branch :</b> ${FOX_SYNC_BRANCH}
 <b>📱 Device :</b> ${DEVICE}
 <b>📝 CodeName :</b> ${DEVICE_NAME}
 <b>📟 Job :</b> $(nproc --all) Paralel processing
@@ -133,7 +133,7 @@ post_message() {
 
 <b>📱 Device :</b> ${DEVICE}
 <b>📝 CodeName :</b> ${DEVICE_NAME}
-<b>🖥 Branch Build :</b> ${FOX_BRANCH}
+<b>🖥 Branch Build :</b> ${FOX_SYNC_BRANCH}
 <b>👩‍💻 Top Commit :</b> ${DT_COMMIT}
 <b>📂 Size :</b> ${ORF_SIZE}
 <b>⏰ Timer Build :</b> ${ORF_TIME}

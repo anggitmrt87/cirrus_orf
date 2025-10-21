@@ -3,7 +3,7 @@
 # Create release notes
 echo "
 ## OrangeFox Recovery Build - Unofficial
-🖥 OrangeFox Branch: ${FOX_BRANCH}
+🖥 OrangeFox Branch: ${FOX_SYNC_BRANCH}
 📱 Device: ${DEVICE}
 📝 CodeName: ${DEVICE_NAME}
 📂 Size: ${ORF_SIZE}
@@ -20,7 +20,7 @@ if [[ -f ".cirrus_readme_template.md" ]]; then
     README_CONTENT=$(cat .cirrus_readme_template.md | \
         sed "s/{{DEVICE}}/${DEVICE}/g" | \
         sed "s/{{DEVICE_NAME}}/${DEVICE_NAME}/g" | \
-        sed "s/{{FOX_BRANCH}}/${FOX_BRANCH}/g" | \
+        sed "s/{{FOX_SYNC_BRANCH}}/${FOX_SYNC_BRANCH}/g" | \
         sed "s/{{BUILD_DATE}}/${BUILD_DATE}/g" | \
         sed "s/{{ORF_SIZE}}/${ORF_SIZE}/g" | \
         sed "s/{{ORF_MD5}}/${ORF_MD5}/g" | \
@@ -42,7 +42,7 @@ else
 ## Build Information
 - **Device**: ${DEVICE}
 - **Codename**: ${DEVICE_NAME} 
-- **OrangeFox Branch**: ${FOX_BRANCH}
+- **OrangeFox Branch**: ${FOX_SYNC_BRANCH}
 - **Build Date**: ${BUILD_DATE}
 - **Size**: ${ORF_SIZE}
 
