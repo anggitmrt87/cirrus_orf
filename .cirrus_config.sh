@@ -157,7 +157,7 @@ post_message() {
 <b>👩‍💻 Top Commit :</b> ${DT_COMMIT}
 <b>📂 Size :</b> ${ORF_SIZE}
 <b>⏰ Timer Build :</b> ${ORF_TIME}
-<b>📥 Download :</b> <a href=\"https://github.com/${ORF_ACTOR}/${ORF_REPONAME}/releases/tag/${ORF_ID}\">Download</a>
+<b>📥 Download :</b> <a href=\"https://github.com/${REPO_PUBLISH}/releases/tag/${ORF_ID}\">Download</a>
 <b>📅 Date :</b> $(TZ=Asia/Jakarta date +%d\ %B\ %Y)
 <b>🕔 Time :</b> $(TZ=Asia/Jakarta date +%T)
 ${FINAL_CCACHE}

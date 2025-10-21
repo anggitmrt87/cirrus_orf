@@ -35,7 +35,7 @@ BUILDLOG="build.log"
 DEVICE=$(grep "PRODUCT_MODEL :=" ${DEVICE_PATH}/twrp_*.mk -m 1 | cut -d = -f 2)
 
 build_message "lunch twrp_${DEVICE_NAME}-eng"
-lunch twrp_${DEVICE_NAME}-eng
+lunch twrp_${DEVICE_NAME}-ap2a-eng
 sleep 5
 
 build_message "Building... 🛠️"
