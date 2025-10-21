@@ -31,7 +31,7 @@ if [[ -f "$CIRRUS_WORKING_DIR/.cirrus_readme_template.md" ]]; then
         sed "s/{{ORF_ID}}/${ORF_ID}/g" | \
         sed "s/{{ORF_TIME}}/${ORF_TIME}/g")
     
-    echo "$README_CONTENT" > README.md
+    echo "$README_CONTENT" > $CIRRUS_WORKING_DIR/README.md
     echo "README.md created successfully!"
 else
     echo "Template file not found, creating basic README.md..."
