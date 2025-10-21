@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Source config functions
-source .cirrus_config.sh
+source $CIRRUS_WORKING_DIR/.cirrus_config.sh
 
 timeStart
 echo -e "\033[0;36mSync OrangeFox Recovery...\033[0m"

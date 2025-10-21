@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Source config functions
-source .cirrus_config.sh
+source $CIRRUS_WORKING_DIR/.cirrus_config.sh
 
 timeStart
 cd $CIRRUS_WORKING_DIR/OrangeFox/fox_${FOX_SYNC_BRANCH}
@@ -49,8 +49,7 @@ export ORF_ID=${CIRRUS_BUILD_ID}
 export ORF_TIME=${EV10}
 
 if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
-    source .cirrus_config.sh
-    bash .cirrus_notes.sh
+    bash $CIRRUS_WORKING_DIR/.cirrus_notes.sh
     
     # Create release with assets
     echo "Creating GitHub release..."
