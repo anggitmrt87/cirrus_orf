@@ -13,7 +13,7 @@ env:
   CCACHE_MAXSIZE: "20G"
   
   FOX_SYNC: "https://gitlab.com/OrangeFox/sync.git"
-  FOX_SYNC_BRANCH: "14.1"
+  FOX_SYNC_BRANCH: "12.1"
   KERNEL_PATH: "kernel/xiaomi/chime"
   DEVICE_TREE: "https://github.com/MRT-project/ORF_device_xiaomi_chime"
   DEVICE_TREE_BRANCH: "12.1"
