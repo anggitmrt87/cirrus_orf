@@ -26,8 +26,6 @@ if [[ -f "$CIRRUS_WORKING_DIR/.cirrus_readme_template.md" ]]; then
         sed "s/{{ORF_MD5}}/${ORF_MD5}/g" | \
         sed "s/{{ORF_SHA1}}/${ORF_SHA1}/g" | \
         sed "s/{{DT_COMMIT}}/${DT_COMMIT}/g" | \
-        sed "s/{{ORF_ACTOR}}/${ORF_ACTOR}/g" | \
-        sed "s/{{ORF_REPONAME}}/${ORF_REPONAME}/g" | \
         sed "s/{{ORF_ID}}/${ORF_ID}/g" | \
         sed "s/{{ORF_TIME}}/${ORF_TIME}/g")
     
