@@ -1,7 +1,11 @@
 # .cirrus.yml
 task:
   name: "🦊 OrangeFox Recovery Builder"
-  timeout_in: 120m
+  timeout_in: 3h
+  container:
+    image: mhmmdfdlyas/dockerfile:r-ubuntu
+    cpu: 8
+    memory: 32G
   
   env:
     # Default values
@@ -29,13 +33,6 @@ task:
     TG_CHAT_ID: ${TG_CHAT_ID}
     TG_TOKEN: ${TG_TOKEN}
     GITHUB_TOKEN: ${GITHUB_TOKEN}
-
-  container:
-    image: ubuntu:22.04
-    
-  compute_engine_instance:
-    cpu: 8
-    memory: 32G
 
   setup_script:
     - apt-get update
