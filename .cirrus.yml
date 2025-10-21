@@ -56,7 +56,7 @@ task:
       export TERM=xterm-256color
       
       # Source config functions
-      . ./.cirrus_config.sh
+      source .cirrus_config.sh
       
       timeStart
       echo -e "\033[0;36mSync OrangeFox Recovery...\033[0m"
@@ -128,7 +128,7 @@ task:
       export TERM=xterm-256color
       
       # Source config functions
-      . ./.cirrus_config.sh
+      source .cirrus_config.sh
       
       cd OrangeFox/fox_${FOX_SYNC_BRANCH}
       
@@ -175,7 +175,7 @@ task:
       export ORF_TIME=${EV10}
       
       if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GITHUB_TOKEN" ]]; then
-          . ./.cirrus_config.sh
+          source .cirrus_config.sh
           bash ./.cirrus_notes.sh
           
           gh release create ${CIRRUS_BUILD_ID} \
