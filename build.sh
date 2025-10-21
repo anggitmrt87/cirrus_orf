@@ -3,6 +3,7 @@
 # Source config functions
 source .cirrus_config.sh
 
+timeStart
 cd $CIRRUS_WORKING_DIR/OrangeFox/fox_${FOX_SYNC_BRANCH}
 
 echo -e "\033[0;36m##########################################\033[0m"
@@ -49,15 +50,41 @@ export ORF_TIME=${EV10}
 
 if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
     source .cirrus_config.sh
-    bash ./.cirrus_notes.sh
+    bash .cirrus_notes.sh
     
+    # Create release with assets
+    echo "Creating GitHub release..."
     gh release create ${CIRRUS_BUILD_ID} \
         out/target/product/${DEVICE_NAME}/OrangeFox*.img \
         out/target/product/${DEVICE_NAME}/OrangeFox*.zip \
         out/target/product/${DEVICE_NAME}/OrangeFox*.zip.md5 \
         --title "🦊 OrangeFox Recovery for ${DEVICE} (${DEVICE_NAME}) // ${BUILD_DATE}" \
         -F ./release-notes.md \
-        -R "https://github.com/${CIRRUS_REPO_FULL_NAME}"
+        -R "${REPO_PUBLISH}"
+    
+    # Push README.md to repository
+    echo "Pushing README.md to repository..."
+    
+    # Setup git
+    git config --global user.name "${USER_NAME}"
+    git config --global user.email "${USER_EMAIL}"
+    
+    # Clone target repository
+    TEMP_DIR=$(mktemp -d)
+    git clone "https://${USER_NAME}:${GH_TOKEN}@github.com/${REPO_PUBLISH}.git" "${TEMP_DIR}"
+    cd "${TEMP_DIR}"
+    
+    # Copy and commit README
+    cp "${CIRRUS_WORKING_DIR}/README.md" ./
+    git add README.md
+    git commit -m "docs: Update README for ${DEVICE} (${DEVICE_NAME}) - ${BUILD_DATE}" || echo "No changes to commit"
+    git push origin main
+    
+    # Cleanup
+    cd "${CIRRUS_WORKING_DIR}"
+    rm -rf "${TEMP_DIR}"
+    
+    echo "README.md successfully pushed to repository!"
     
     post_message
 else

@@ -64,3 +64,4 @@ if [[ -n "${DEVICE_TREE}" ]]; then
     echo -e "\033[0;36mCloning Device Tree...\033[0m"
     git clone ${DEVICE_TREE} -b ${DEVICE_TREE_BRANCH} ${DEVICE_PATH}
 fi
+timeEnd
