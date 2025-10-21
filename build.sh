@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-export TERM=xterm-256color
-
 # Source config functions
 source .cirrus_config.sh
 

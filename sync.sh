@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-export TERM=xterm-256color
-
 # Source config functions
 source .cirrus_config.sh
 
@@ -13,8 +10,8 @@ mkdir -p OrangeFox && cd OrangeFox
 git config --global user.name "${USER_NAME}"
 git config --global user.email "${USER_EMAIL}"
 
-echo "${GITHUB_TOKEN}" >> ikitoken.txt
-unset GITHUB_TOKEN
+echo "${GH_TOKEN}" >> ikitoken.txt
+unset GH_TOKEN
 gh auth login --with-token < ikitoken.txt
 
 git clone ${FOX_SYNC} && cd sync
