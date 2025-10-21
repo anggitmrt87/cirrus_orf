@@ -50,7 +50,7 @@ export ORF_REPONAME=${CIRRUS_REPO_NAME}
 export ORF_ID=${CIRRUS_BUILD_ID}
 export ORF_TIME=${EV10}
 
-if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GITHUB_TOKEN" ]]; then
+if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
     source .cirrus_config.sh
     bash ./.cirrus_notes.sh
     

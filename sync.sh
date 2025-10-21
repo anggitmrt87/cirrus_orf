@@ -14,8 +14,8 @@ git config --global user.name "${USER_NAME}"
 git config --global user.email "${USER_EMAIL}"
 
 # GitHub authentication if token provided
-if [[ -n "$GITHUB_TOKEN" ]]; then
-  echo "$GITHUB_TOKEN" > ikitoken.txt
+if [[ -n "$GH_TOKEN" ]]; then
+  echo "$GH_TOKEN" > ikitoken.txt
   gh auth login --with-token < ikitoken.txt
 fi
 
