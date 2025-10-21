@@ -3,7 +3,7 @@
 # Source config functions
 source .cirrus_config.sh
 
-cd OrangeFox/fox_${FOX_SYNC_BRANCH}
+cd $CIRRUS_WORKING_DIR/OrangeFox/fox_${FOX_SYNC_BRANCH}
 
 echo -e "\033[0;36m##########################################\033[0m"
 echo -e "\033[0;36m$(figlet "OrangeFox")\033[0m"

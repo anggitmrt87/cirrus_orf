@@ -6,7 +6,7 @@ source .cirrus_config.sh
 timeStart
 echo -e "\033[0;36mSync OrangeFox Recovery...\033[0m"
 
-mkdir -p OrangeFox && cd OrangeFox
+mkdir -p $CIRRUS_WORKING_DIR/OrangeFox && cd $CIRRUS_WORKING_DIR/OrangeFox
 git config --global user.name "${USER_NAME}"
 git config --global user.email "${USER_EMAIL}"
 
@@ -14,9 +14,9 @@ echo "${GH_TOKEN}" >> ikitoken.txt
 unset GH_TOKEN
 gh auth login --with-token < ikitoken.txt
 
-git clone ${FOX_SYNC} && cd sync
-./orangefox_sync.sh --branch ${FOX_SYNC_BRANCH} --path ../fox_${FOX_SYNC_BRANCH}
-cd ../fox_${FOX_SYNC_BRANCH}
+git clone ${FOX_SYNC} $CIRRUS_WORKING_DIR/sync && cd $CIRRUS_WORKING_DIR/sync
+./orangefox_sync.sh --branch ${FOX_SYNC_BRANCH} --path $CIRRUS_WORKING_DIR/OrangeFox/fox_${FOX_SYNC_BRANCH}
+cd $CIRRUS_WORKING_DIR/OrangeFox/fox_${FOX_SYNC_BRANCH}
 
 # Add required components
 if [[ ! -d bootable/recovery/gui/theme ]]; then
