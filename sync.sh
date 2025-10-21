@@ -13,9 +13,9 @@ mkdir -p OrangeFox && cd OrangeFox
 git config --global user.name "${USER_NAME}"
 git config --global user.email "${USER_EMAIL}"
 
-if [[ -n "$GH_TOKEN" ]]; then
-  echo "$GH_TOKEN" | gh auth login --with-token
-fi
+echo "${GITHUB_TOKEN}" >> ikitoken.txt
+unset GITHUB_TOKEN
+gh auth login --with-token < ikitoken.txt
 
 git clone ${FOX_SYNC} && cd sync
 ./orangefox_sync.sh --branch ${FOX_SYNC_BRANCH} --path ../fox_${FOX_SYNC_BRANCH}
