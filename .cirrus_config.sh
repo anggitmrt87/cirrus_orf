@@ -99,15 +99,25 @@ tg_send_photo() {
 }
 
 build_message() {
+    # Get CCache stats if available
+    local CCACHE_INFO=""
+    if command -v ccache &> /dev/null; then
+        CCACHE_INFO=$(ccache -s 2>/dev/null | grep -E "cache hit \(rate\|ratio\)" | head -1)
+        if [ ! -z "$CCACHE_INFO" ]; then
+            CCACHE_INFO="\n<b>🔰 CCache:</b> <code>${CCACHE_INFO}</code>"
+        fi
+    fi
+
 	if [ "$CI_MESSAGE_ID" = "" ]; then
 CI_MESSAGE_ID=$(tg_send_photo --chat_id "$TG_CHAT_ID" --photo "$LOGO" --parse_mode "html" --caption "<b>=== 🦊 OrangeFox Recovery Builder ===</b>
 <b>🖥 OrangeFox Branch :</b> ${FOX_SYNC_BRANCH}
 <b>📱 Device :</b> ${DEVICE}
 <b>📝 CodeName :</b> ${DEVICE_NAME}
 <b>📟 Job :</b> $(nproc --all) Paralel processing
-<b>🗃 Storage :</b> 200GB
+<b>🗃 Storage :</b> 800GB
 <b>⏳ Running on :</b> $DISTRO
 <b>📅 Started at :</b> $DATE
+${CCACHE_INFO}
 
 <b>⚙️ Status:</b> ${1}
 ${2}" | jq .result.message_id)
@@ -117,9 +127,10 @@ tg_edit_message_caption --chat_id "$TG_CHAT_ID" --message_id "$CI_MESSAGE_ID" --
 <b>📱 Device :</b> ${DEVICE}
 <b>📝 CodeName :</b> ${DEVICE_NAME}
 <b>📟 Job :</b> $(nproc --all) Paralel processing
-<b>🗃 Storage :</b> 200GB
+<b>🗃 Storage :</b> 800GB
 <b>⏳ Running on :</b> $DISTRO
 <b>📅 Started at :</b> $DATE
+${CCACHE_INFO}
 
 <b>⚙️ Status :</b> <code>${1}</code>
 <code>${2}</code>"
@@ -127,6 +138,15 @@ tg_edit_message_caption --chat_id "$TG_CHAT_ID" --message_id "$CI_MESSAGE_ID" --
 }
 
 post_message() {
+    # Get final CCache stats
+    local FINAL_CCACHE=""
+    if command -v ccache &> /dev/null; then
+        FINAL_CCACHE=$(ccache -s 2>/dev/null | grep -E "cache hit \(rate\|ratio\)" | head -1)
+        if [ ! -z "$FINAL_CCACHE" ]; then
+            FINAL_CCACHE="\n<b>🔰 CCache Hit Rate:</b> <code>${FINAL_CCACHE}</code>"
+        fi
+    fi
+
     tg_send_photo --chat_id "$TG_CHAT_ID" --photo "$LOGO" --parse_mode "html" --reply_to_message_id "$CI_MESSAGE_ID" --caption "<b>=== 🦊 OrangeFox Recovery Builder ===</b>
 ==========================
 <b>✅ Build Completed Successfully</b>
@@ -140,6 +160,7 @@ post_message() {
 <b>📥 Download :</b> <a href=\"https://github.com/${ORF_ACTOR}/${ORF_REPONAME}/releases/tag/${ORF_ID}\">Download</a>
 <b>📅 Date :</b> $(TZ=Asia/Jakarta date +%d\ %B\ %Y)
 <b>🕔 Time :</b> $(TZ=Asia/Jakarta date +%T)
+${FINAL_CCACHE}
 
 <b>📕 MD5 :-</b> <code>${ORF_MD5}</code>
 <b>📘 SHA1 :-</b> <code>${ORF_SHA1}</code>

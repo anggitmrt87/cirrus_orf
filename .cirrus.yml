@@ -4,6 +4,14 @@ env:
   LANG: "C.UTF-8"
   LC_ALL: "C"
   
+  # CCache Configuration
+  CCACHE_DIR: "/cirrus/ccache"
+  CCACHE_SIZE: "20G"
+  CCACHE_COMPRESS: "true"
+  CCACHE_COMPRESSLEVEL: "6"
+  USE_CCACHE: "1"
+  CCACHE_MAXSIZE: "20G"
+  
   FOX_SYNC: "https://gitlab.com/OrangeFox/sync.git"
   FOX_SYNC_BRANCH: "12.1"
   KERNEL_PATH: "kernel/xiaomi/chime"
@@ -38,12 +46,24 @@ task:
     cpu: 8
     memory: 32G
 
+  # Persistent CCache Configuration
+  ccache_cache:
+    folder: /cirrus/ccache
+    fingerprint_script:
+      - echo "v1"
+    populate_script:
+      - mkdir -p /cirrus/ccache
+
   setup_script:
     - apt-get update
     - apt-get install -y sudo curl wget git jq figlet aria2 python3-all-dev apt-utils
-    - apt-get install -y libtinfo6 libncurses6 libncurses-dev libncurses5-dev lsb-release lsb-base
+    - apt-get install -y libtinfo6 libncurses6 libncurses-dev libncurses5-dev lsb-release lsb-base ccache
     - echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && /usr/sbin/locale-gen
     - ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+    - mkdir -p /cirrus/ccache
+    - ccache -M 20G
+    - ccache -o compression=true
+    - ccache -o compression_level=6
     - apt-get update
 
   build_environment_script:

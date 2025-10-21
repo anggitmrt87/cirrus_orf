@@ -10,6 +10,24 @@ echo -e "\033[0;36m##########################################\033[0m"
 echo -e "\033[0;36m$(figlet "OrangeFox")\033[0m"
 echo -e "\033[0;36m##########################################\033[0m"
 
+# Setup CCache dengan logging yang lebih baik
+echo -e "\033[0;36mSetting up CCache...\033[0m"
+export USE_CCACHE=1
+export CCACHE_DIR="/cirrus/ccache"
+ccache -M 20G
+ccache -o compression=true
+ccache -o compression_level=6
+
+# Show detailed CCache stats before build
+echo -e "\033[0;36m=== CCache Stats Before Build ===\033[0m"
+ccache -s
+echo -e "\033[0;36m=================================\033[0m"
+
+# Info cache directory
+echo -e "\033[0;36mCCache directory: ${CCACHE_DIR}\033[0m"
+echo -e "\033[0;36mCCache contents:\033[0m"
+ls -la ${CCACHE_DIR} 2>/dev/null | head -10 || echo "Cache directory is empty"
+
 source build/envsetup.sh
 export ALLOW_MISSING_DEPENDENCIES=true
 
@@ -22,8 +40,17 @@ sleep 5
 
 build_message "Building... 🛠️"
 mkfifo -m 644 reading
-tee -a ${BUILDLOG} < reading & progress & mka adbd ${BUILD_TARGET}image -j$(nproc --all) > reading
+tee -a ${BUILDLOG} < reading & progress & mka adbd ${BUILD_TARGET}image -j$(nproc --all) CCACHE=1 > reading
 retVal=$?
+
+# Show detailed CCache stats after build
+echo -e "\033[0;36m=== CCache Stats After Build ===\033[0m"
+ccache -s
+echo -e "\033[0;36m================================\033[0m"
+
+# Show cache effectiveness
+echo -e "\033[0;36mCache Effectiveness:\033[0m"
+ccache -s | grep -E "hit rate|hit ratio"
 
 timeEnd
 statusBuild
@@ -77,7 +104,7 @@ if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
     cp "${CIRRUS_WORKING_DIR}/README.md" ./
     git add README.md
     git commit -m "docs: Update README for ${DEVICE} (${DEVICE_NAME}) - ${BUILD_DATE}" || echo "No changes to commit"
-    git push origin main
+    git push origin -f
     
     # Cleanup
     cd "${CIRRUS_WORKING_DIR}"

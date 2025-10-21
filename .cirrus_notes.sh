@@ -13,11 +13,11 @@ echo "
 " >> ./release-notes.md
 
 # Create README.md from template
-if [[ -f ".cirrus_readme_template.md" ]]; then
+if [[ -f "$CIRRUS_WORKING_DIR/.cirrus_readme_template.md" ]]; then
     echo "Creating README.md from template..."
     
     # Read template and replace variables
-    README_CONTENT=$(cat .cirrus_readme_template.md | \
+    README_CONTENT=$(cat $CIRRUS_WORKING_DIR/.cirrus_readme_template.md | \
         sed "s/{{DEVICE}}/${DEVICE}/g" | \
         sed "s/{{DEVICE_NAME}}/${DEVICE_NAME}/g" | \
         sed "s/{{FOX_SYNC_BRANCH}}/${FOX_SYNC_BRANCH}/g" | \
@@ -47,7 +47,7 @@ else
 - **Size**: ${ORF_SIZE}
 
 ## Download
-[GitHub Releases](https://github.com/${ORF_ACTOR}/${ORF_REPONAME}/releases/tag/${ORF_ID})
+[GitHub Releases](https://github.com/${REPO_PUBLISH}/releases/tag/${ORF_ID})
 
 ## Verification
 - **MD5**: ${ORF_MD5}
