@@ -13,10 +13,8 @@ mkdir -p OrangeFox && cd OrangeFox
 git config --global user.name "${USER_NAME}"
 git config --global user.email "${USER_EMAIL}"
 
-# GitHub authentication if token provided
 if [[ -n "$GH_TOKEN" ]]; then
-  echo "$GH_TOKEN" > ikitoken.txt
-  gh auth login --with-token < ikitoken.txt
+  echo "$GH_TOKEN" | gh auth login --with-token
 fi
 
 git clone ${FOX_SYNC} && cd sync
