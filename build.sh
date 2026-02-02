@@ -62,6 +62,7 @@ EV3=$(ls -lh out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f5)
 EV4=$(md5sum out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f1)
 EV5=$(sha1sum out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f1)
 EV6=$(cd ${DEVICE_PATH} && git log --pretty=format:'%s' -1)
+EV7=$(ls out/target/product/${DEVICE_NAME}/OrangeFox*.zip)
 EV10=$(grep "#### build completed successfully" ${BUILDLOG} -m 1 | cut -d '(' -f 2)
 
 export BUILD_DATE=${EV1}
@@ -70,6 +71,7 @@ export ORF_SIZE=${EV3}
 export ORF_MD5=${EV4}
 export ORF_SHA1=${EV5}
 export DT_COMMIT=${EV6}
+export ORF_ZIPNAME=${EV7}
 export ORF_ACTOR=${CIRRUS_REPO_OWNER}
 export ORF_REPONAME=${CIRRUS_REPO_NAME}
 export ORF_ID=${CIRRUS_BUILD_ID}
@@ -80,8 +82,9 @@ if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
     
     # Create release with assets
     echo "Creating GitHub release..."
+    mv out/target/product/${DEVICE_NAME}/OrangeFox*.img out/target/product/${DEVICE_NAME}/recovery.img
     gh release create ${CIRRUS_BUILD_ID} \
-        out/target/product/${DEVICE_NAME}/OrangeFox*.img \
+        out/target/product/${DEVICE_NAME}/recovery.img \
         out/target/product/${DEVICE_NAME}/OrangeFox*.zip \
         out/target/product/${DEVICE_NAME}/OrangeFox*.zip.md5 \
         --title "🦊 OrangeFox Recovery for ${DEVICE} (${DEVICE_NAME}) // ${BUILD_DATE}" \

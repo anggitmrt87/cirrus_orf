@@ -22,6 +22,7 @@ if [[ -f "$CIRRUS_WORKING_DIR/.cirrus_readme_template.md" ]]; then
         sed "s/{{DEVICE_NAME}}/${DEVICE_NAME}/g" | \
         sed "s/{{FOX_SYNC_BRANCH}}/${FOX_SYNC_BRANCH}/g" | \
         sed "s/{{BUILD_DATE}}/${BUILD_DATE}/g" | \
+        sed "s/{{ORF_ZIPNAME}}/${ORF_ZIPNAME}/g" | \
         sed "s/{{ORF_SIZE}}/${ORF_SIZE}/g" | \
         sed "s/{{ORF_MD5}}/${ORF_MD5}/g" | \
         sed "s/{{ORF_SHA1}}/${ORF_SHA1}/g" | \
