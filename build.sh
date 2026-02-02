@@ -12,7 +12,7 @@ echo -e "\033[0;36m##########################################\033[0m"
 
 # Setup CCache dengan logging yang lebih baik
 echo -e "\033[0;36mSetting up CCache...\033[0m"
-export USE_CCACHE=1
+export USE_CCACHE="1"
 export CCACHE_DIR="/cirrus/ccache"
 ccache -M 20G
 ccache -o compression=true
@@ -29,7 +29,7 @@ echo -e "\033[0;36mCCache contents:\033[0m"
 ls -la ${CCACHE_DIR} 2>/dev/null | head -10 || echo "Cache directory is empty"
 
 source build/envsetup.sh
-export ALLOW_MISSING_DEPENDENCIES=true
+export ALLOW_MISSING_DEPENDENCIES="true"
 
 BUILDLOG="build.log"
 DEVICE=$(grep "PRODUCT_MODEL :=" ${DEVICE_PATH}/twrp_*.mk -m 1 | cut -d = -f 2)
@@ -65,17 +65,17 @@ EV6=$(cd ${DEVICE_PATH} && git log --pretty=format:'%s' -1)
 EV7=$(ls out/target/product/${DEVICE_NAME}/OrangeFox*.zip)
 EV10=$(grep "#### build completed successfully" ${BUILDLOG} -m 1 | cut -d '(' -f 2)
 
-export BUILD_DATE=${EV1}
-export DEVICE=${EV2}
-export ORF_SIZE=${EV3}
-export ORF_MD5=${EV4}
-export ORF_SHA1=${EV5}
-export DT_COMMIT=${EV6}
-export ORF_ZIPNAME=${EV7}
-export ORF_ACTOR=${CIRRUS_REPO_OWNER}
-export ORF_REPONAME=${CIRRUS_REPO_NAME}
-export ORF_ID=${CIRRUS_BUILD_ID}
-export ORF_TIME=${EV10}
+export BUILD_DATE="${EV1}"
+export DEVICE="${EV2}"
+export ORF_SIZE="${EV3}"
+export ORF_MD5="${EV4}"
+export ORF_SHA1="${EV5}"
+export DT_COMMIT="${EV6}"
+export ORF_ZIPNAME="${EV7}"
+export ORF_ACTOR="${CIRRUS_REPO_OWNER}"
+export ORF_REPONAME="${CIRRUS_REPO_NAME}"
+export ORF_ID="${CIRRUS_BUILD_ID}"
+export ORF_TIME="${EV10}"
 
 if [[ "${GH_RELEASE}" == "true" ]] && [[ -n "$GH_TOKEN" ]]; then
     bash $CIRRUS_WORKING_DIR/.cirrus_notes.sh
