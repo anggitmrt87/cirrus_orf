@@ -62,7 +62,7 @@ EV3=$(ls -lh out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f5)
 EV4=$(md5sum out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f1)
 EV5=$(sha1sum out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f1)
 EV6=$(cd ${DEVICE_PATH} && git log --pretty=format:'%s' -1)
-EV7=$(ls out/target/product/${DEVICE_NAME}/OrangeFox*.zip)
+EV7=$(basename $(ls out/target/product/${DEVICE_NAME}/OrangeFox*.zip))
 EV10=$(grep "#### build completed successfully" ${BUILDLOG} -m 1 | cut -d '(' -f 2)
 
 export BUILD_DATE="${EV1}"
