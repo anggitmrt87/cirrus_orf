@@ -56,7 +56,7 @@ timeEnd
 statusBuild
 
 # Extract build information
-EV1=$(TZ=Asia/Jakarta date +%Y%m%d)
+EV1=$(TZ=Asia/Jakarta date +'%Y-%m-%d %H:%M:%S')
 EV2=$(grep "PRODUCT_MODEL :=" ${DEVICE_PATH}/twrp_*.mk -m 1 | cut -d = -f 2)
 EV3=$(ls -lh out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f5)
 EV4=$(md5sum out/target/product/${DEVICE_NAME}/OrangeFox*.zip | cut -d ' ' -f1)
