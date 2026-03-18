@@ -14,6 +14,8 @@ echo -e "\033[0;36m##########################################\033[0m"
 echo -e "\033[0;36mSetting up CCache...\033[0m"
 export USE_CCACHE="1"
 export CCACHE_DIR="/cirrus/ccache"
+export CCACHE_EXEC=$(which ccache)
+export CC="ccache clang"
 ccache -M 20G
 ccache -o compression=true
 ccache -o compression_level=6
