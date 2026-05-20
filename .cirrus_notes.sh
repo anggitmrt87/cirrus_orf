@@ -10,6 +10,8 @@ echo "
 👩‍💻 Top Commit: ${DT_COMMIT}
 📕 MD5: ${ORF_MD5}
 📘 SHA1: ${ORF_SHA1}
+
+More changes see here: ${DEVICE_TREE}/commits/${DEVICE_TREE_BRANCH}
 " >> ./release-notes.md
 
 # Create README.md from template
