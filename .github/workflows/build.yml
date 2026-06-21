@@ -71,7 +71,7 @@ jobs:
             sudo curl wget git jq figlet aria2 python3-all-dev apt-utils \
             libtinfo6 libncurses6 libncurses-dev libncurses5-dev \
             lsb-release lsb-base ccache
-          sudo ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+          sudo ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" | sudo tee /etc/timezone
           mkdir -p "$CCACHE_DIR"
           ccache -M 20G
           ccache -o compression=true
