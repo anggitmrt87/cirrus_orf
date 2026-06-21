@@ -1,0 +1,118 @@
+name: Build OrangeFox Recovery
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+env:
+  TZ: "Asia/Jakarta"
+  LANG: "C.UTF-8"
+  LC_ALL: "C"
+
+  CCACHE_DIR: "${{ github.workspace }}/ccache"
+  CCACHE_SIZE: "20G"
+  CCACHE_COMPRESS: "true"
+  CCACHE_COMPRESSLEVEL: "6"
+  USE_CCACHE: "1"
+  CCACHE_MAXSIZE: "20G"
+
+  FOX_SYNC: "https://gitlab.com/OrangeFox/sync.git"
+  FOX_SYNC_BRANCH: "12.1"
+  KERNEL_PATH: "kernel/xiaomi/chime"
+  DEVICE_TREE: "https://github.com/MRT-project/ORF_device_xiaomi_chime"
+  DEVICE_TREE_BRANCH: "12.1"
+  DEVICE_PATH: "device/xiaomi/chime"
+  DEVICE_NAME: "chime"
+  BUILD_TARGET: "recovery"
+  COMMON_PATH: "common/xiaomi/chime"
+  MAINTAINER_URL: "https://i.ibb.co.com/8gyjXq06/maintainer.png"
+  GH_RELEASE: "true"
+  REPO_PUBLISH: "MRT-project/OrangeFox_recovery"
+
+  USER_NAME: "anggitmrt87"
+  USER_EMAIL: "jarbull87@gmail.com"
+
+  KERNEL_TREE: ""
+  KERNEL_BRANCH: ""
+  COMMON_TREE: ""
+  COMMON_BRANCH: ""
+
+  CIRRUS_WORKING_DIR: "${{ github.workspace }}"
+  CIRRUS_BUILD_ID: "${{ github.run_id }}"
+  CIRRUS_REPO_OWNER: "${{ github.repository_owner }}"
+  CIRRUS_REPO_NAME: "${{ github.event.repository.name }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clean-up
+        uses: rokibhasansagar/slimhub_actions@main
+
+      - name: Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 16
+
+      - name: Setup environment and install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            sudo curl wget git jq figlet aria2 python3-all-dev apt-utils \
+            libtinfo6 libncurses6 libncurses-dev libncurses5-dev \
+            lsb-release lsb-base ccache
+          sudo ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+          mkdir -p "$CCACHE_DIR"
+          ccache -M 20G
+          ccache -o compression=true
+          ccache -o compression_level=6
+          git clone https://github.com/akhilnarang/scripts.git -b master .sc
+          sudo bash .sc/setup/android_build_env.sh
+        env:
+          TZ: ${{ env.TZ }}
+          CCACHE_DIR: ${{ env.CCACHE_DIR }}
+
+      - name: Cache CCache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ccache-${{ runner.os }}-${{ github.ref_name }}
+          restore-keys: |
+            ccache-${{ runner.os }}-
+
+      - name: Sync sources
+        run: ./sync.sh
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          USER_NAME: ${{ env.USER_NAME }}
+          USER_EMAIL: ${{ env.USER_EMAIL }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+
+      - name: Build recovery
+        run: ./build.sh
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          USER_NAME: ${{ env.USER_NAME }}
+          USER_EMAIL: ${{ env.USER_EMAIL }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          REPO_PUBLISH: ${{ env.REPO_PUBLISH }}
+          GH_RELEASE: ${{ env.GH_RELEASE }}
+          DEVICE_PATH: ${{ env.DEVICE_PATH }}
+          DEVICE_NAME: ${{ env.DEVICE_NAME }}
+          FOX_SYNC_BRANCH: ${{ env.FOX_SYNC_BRANCH }}
+          CIRRUS_WORKING_DIR: ${{ env.CIRRUS_WORKING_DIR }}
+          CIRRUS_BUILD_ID: ${{ env.CIRRUS_BUILD_ID }}
+          CIRRUS_REPO_OWNER: ${{ env.CIRRUS_REPO_OWNER }}
+          CIRRUS_REPO_NAME: ${{ env.CIRRUS_REPO_NAME }}
